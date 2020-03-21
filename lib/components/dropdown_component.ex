@@ -4,11 +4,14 @@ defmodule BulmaWidgets.DropdownComponent do
 
   defstruct id: nil, active: false, selected: nil, index: nil, items: []
 
-  def update(%{type: :command, active: active?, id: _id}, socket) do
+  def update(%{type: :command, active: active?, id: _id} = _cmd, socket) do
     {:ok, socket |> assign(active: active?)}
   end
 
   def update(assigns, socket) do
+    Logger.info("bulma updating widget: #{__MODULE__}: assigns: #{inspect([assigns: assigns])}")
+    Logger.info("bulma updating widget: #{__MODULE__}: socket: #{inspect([assigns: socket])}")
+
     unless assigns[:items],
       do:
         raise(%ArgumentError{
@@ -24,8 +27,8 @@ defmodule BulmaWidgets.DropdownComponent do
       assigns
       |> Map.put_new(:active, false)
       |> Map.put_new(:icon, 'fa fa-angle-down')
-      |> Map.put_new(:index, items |> Enum.at(0) |> elem(0))
-      |> Map.put_new(:selected, items |> Enum.at(0) |> elem(1))
+      |> Map.put_new(:index, socket.assigns[:index] ||  items |> Enum.at(0) |> elem(0))
+      |> Map.put_new(:selected, socket.assigns[:selected] || items |> Enum.at(0) |> elem(1))
 
     send(self(), {:widgets, :register, {assigns.id, __MODULE__}})
     {:ok, socket |> assign(assigns) |> assign(items: items)}
@@ -72,6 +75,7 @@ defmodule BulmaWidgets.DropdownComponent do
     {key, item} = socket.assigns.items |> List.keyfind(params["key"], 0)
 
     send(self(), {:widgets, :active, socket.assigns.id, false})
+    Logger.info("bulma updating widget: #{__MODULE__}: selected: #{inspect([index: key, selected: item])}")
     {:noreply, socket |> assign(index: key, selected: item)}
   end
 end
