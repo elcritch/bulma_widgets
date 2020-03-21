@@ -21,7 +21,7 @@ defmodule BulmaWidgets.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:phoenix_live_view, "~> 0.9.0"},
+      {:phoenix_live_view, "~> 0.9", optional: true},
     ]
   end
 end
