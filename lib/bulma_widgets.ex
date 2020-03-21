@@ -2,6 +2,9 @@ defmodule BulmaWidgets do
   import Phoenix.LiveView
   require Logger
 
+  @type widget_id :: {atom(), module()}
+  @type widgets :: list(widget_id())
+
   @doc """
   Imports various helpers to handle widget activations and state management.
 
@@ -39,6 +42,7 @@ defmodule BulmaWidgets do
   @doc """
   Helper function to register a widget in the LiveView's socket assigns under the `:widgets` variable.
   """
+  @spec widget_register(Phoenix.LiveView.Socket.t(), BulmaWidget.widget_id()) :: Phoenix.LiveView.Socket.t()
   def widget_register(socket, widget) do
     widgets = socket.assigns[:widgets] || []
     socket |> assign(widgets: Keyword.merge(widgets, [widget]))
@@ -52,6 +56,7 @@ defmodule BulmaWidgets do
       iex> socket |> widget_close_all(except: {:widget_id, true || false})
 
   """
+  @spec widget_close_all(Phoenix.LiveView.Socket.t(), [] | [except: {atom(), boolean()}]) :: Phoenix.LiveView.Socket.t()
   def widget_close_all(socket, opts \\ []) do
     {id, toggle} = opts[:except] || {nil, false}
 
