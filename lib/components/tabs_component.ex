@@ -20,6 +20,7 @@ defmodule BulmaWidgets.TabsComponent do
 
     assigns =
       assigns
+      |> Map.put_new(:assign_value, false)
       |> Map.put_new(:icons, %{})
       |> Map.put_new(:index, socket.assigns[:index] || default_index)
       |> Map.put_new(:selected, socket.assigns[:selected] || default_selected)
@@ -66,6 +67,9 @@ defmodule BulmaWidgets.TabsComponent do
     {key, item} = socket.assigns.items |> List.keyfind(params["key"], 0)
 
     send(self(), {:widgets, :active, socket.assigns.id, false})
+    if socket.assigns.assign_value do
+      send(self(), {:widgets, :assign_value, socket.assigns.id, item})
+    end
     {:noreply, socket |> assign(index: key, selected: item)}
   end
 end

@@ -22,6 +22,7 @@ defmodule BulmaWidgets.DropdownComponent do
 
     assigns =
       assigns
+      |> Map.put_new(:assign_value, false)
       |> Map.put_new(:active, false)
       |> Map.put_new(:icon, 'fa fa-angle-down')
       |> Map.put_new(:index, socket.assigns[:index] || default_index)
@@ -72,7 +73,9 @@ defmodule BulmaWidgets.DropdownComponent do
     {key, item} = socket.assigns.items |> List.keyfind(params["key"], 0)
 
     send(self(), {:widgets, :active, socket.assigns.id, false})
-    Logger.info("bulma updating widget: #{__MODULE__}: selected: #{inspect([index: key, selected: item])}")
+    if socket.assigns.assign_value do
+      send(self(), {:widgets, :assign_value, socket.assigns.id, item})
+    end
     {:noreply, socket |> assign(index: key, selected: item)}
   end
 end
