@@ -43,13 +43,17 @@ defmodule BulmaWidgets do
     end
   end
 
+  def widgets_init(socket) do
+    socket |> assign(widget_ids: []) |> assign(widgets: %{})
+  end
+
   @doc """
   Helper function to register a widget in the LiveView's socket assigns under the `:widgets` variable.
   """
   @spec widget_register(Phoenix.LiveView.Socket.t(), BulmaWidget.widget_id()) :: Phoenix.LiveView.Socket.t()
-  def widget_register(socket, widget) do
-    widgets = socket.assigns[:widgets] || []
-    socket |> assign(widgets: Keyword.merge(widgets, [widget]))
+  def widget_register(socket, widget_id) do
+    widget_ids = socket.assigns[:widget_ids] || []
+    socket |> assign(widget_ids: Keyword.merge(widget_ids, [widget_id]))
   end
 
   @doc """
@@ -57,7 +61,7 @@ defmodule BulmaWidgets do
   """
   @spec widget_register(Phoenix.LiveView.Socket.t(), BulmaWidget.widget_id()) :: Phoenix.LiveView.Socket.t()
   def widget_assign(socket, widget_id, widget_value) do
-    socket |> assign(%{widget_id => widget_value})
+    socket |> assign(widgets: socket.assigns.widgets |> Map.put(widget_id, widget_value))
   end
 
   @doc """
@@ -72,7 +76,7 @@ defmodule BulmaWidgets do
   def widget_close_all(socket, opts \\ []) do
     {id, toggle} = opts[:except] || {nil, false}
 
-    for {widget_id, module} <- socket.assigns.widgets do
+    for {widget_id, module} <- socket.assigns.widget_ids do
       unless widget_id == id && toggle do
         send_update(module, id: widget_id, type: :command, active: false)
       end
