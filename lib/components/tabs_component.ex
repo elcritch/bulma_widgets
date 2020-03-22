@@ -31,7 +31,7 @@ defmodule BulmaWidgets.TabsComponent do
 
   def render(assigns) do
     ~L"""
-      <div class="tabs widgets-tabs widgets-tabs-width <%= @classes %>"
+      <div class="tabs bulma-widgets-tabs widgets-tabs-width <%= @classes %>"
            id="bulma-tabs-<%= @id %>" >
         <ul>
           <%= for {key, item} <- @items do %>

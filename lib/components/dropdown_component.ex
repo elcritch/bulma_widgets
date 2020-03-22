@@ -34,10 +34,10 @@ defmodule BulmaWidgets.DropdownComponent do
 
   def render(assigns) do
     ~L"""
-      <div class="dropdown widgets-dropdown widgets-dropdown-width <%= if @active do 'is-active' end %>"
+      <div class="dropdown <%= if @active do 'is-active' end %> bulma-widgets-dropdown bulma-widgets-dropdown-width"
            id="bulma-dropdown-<%= @id %>" >
-        <div class="dropdown-trigger widgets-dropdown-width ">
-          <button class="button widgets-dropdown-width "
+        <div class="dropdown-trigger bulma-widgets-dropdown-width ">
+          <button class="button bulma-widgets-dropdown-width "
                   aria-haspopup="true"
                   aria-controls="bulma-dropdown-menu-<%= @id %>"
                   phx-click="clicked"
@@ -48,8 +48,9 @@ defmodule BulmaWidgets.DropdownComponent do
             </span>
           </button>
         </div>
-        <div class="dropdown-menu widgets-dropdown-width " id="bulma-dropdown-menu-<%= @id %>" role="menu">
-          <div class="dropdown-content widgets-dropdown-width ">
+        <div class="dropdown-menu bulma-widgets-dropdown-width "
+             id="bulma-dropdown-menu-<%= @id %>" role="menu">
+          <div class="dropdown-content bulma-widgets-dropdown-width ">
             <%= for {key, item} <- @items do %>
               <a href="#" class="dropdown-item <%= if key == @index do 'is-active' end %>"
                   phx-value-key="<%= key %>"
