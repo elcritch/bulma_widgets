@@ -9,8 +9,11 @@ defmodule BulmaWidgets do
   @doc """
   Imports various helpers to handle widget activations and state management.
 
-  Two variables `:widgets` and `:widget_ids` are set in the socket assigns. This variable maintains
-  a list of widgets which allows both the library and end users interact with widgets.
+  Two variables `:widgets` and `:widget_ids` are set in the socket assigns. The
+  variable `:widget_ids` maintains a list of widget ids which enables both interactaction
+  with widgets. The variable `:widgets` maintains assigns sent from the widgets, generally
+  to store the current selection or user input for use elsewhere in the LiveView. The state
+  is maintained in the widget itself, so this value is intened to be read-only.
 
   One usage of this to close all other widgets that have an `active` state such as drop down menus.
   This makes using the widgets feel more cohesive and reduces the work required to configured
