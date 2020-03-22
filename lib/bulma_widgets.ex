@@ -4,11 +4,12 @@ defmodule BulmaWidgets do
 
   @type widget_id :: {atom(), module()}
   @type widget_ids :: %{atom() => module()}
+  @type widgets :: %{atom() => any()}
 
   @doc """
   Imports various helpers to handle widget activations and state management.
 
-  Currently only one variable `:widgets` is set in the socket assigns. This variable maintains
+  Two variables `:widgets` and `:widget_ids` are set in the socket assigns. This variable maintains
   a list of widgets which allows both the library and end users interact with widgets.
 
   One usage of this to close all other widgets that have an `active` state such as drop down menus.
@@ -44,16 +45,16 @@ defmodule BulmaWidgets do
   end
 
   def widgets_init(socket) do
-    socket |> assign(widget_ids: []) |> assign(widgets: %{})
+    socket |> assign(widget_ids: %{}) |> assign(widgets: %{})
   end
 
   @doc """
   Helper function to register a widget in the LiveView's socket assigns under the `:widgets` variable.
   """
   @spec widget_register(Phoenix.LiveView.Socket.t(), BulmaWidget.widget_id()) :: Phoenix.LiveView.Socket.t()
-  def widget_register(socket, widget_id) do
-    widget_ids = socket.assigns[:widget_ids] || []
-    socket |> assign(widget_ids: Keyword.merge(widget_ids, [widget_id]))
+  def widget_register(socket, {widget_id, widget_module}) do
+    widget_ids = socket.assigns[:widget_ids] || %{}
+    socket |> assign(widget_ids: Map.put(widget_ids, widget_id, widget_module))
   end
 
   @doc """
