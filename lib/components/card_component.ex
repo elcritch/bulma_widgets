@@ -12,7 +12,7 @@ defmodule BulmaWidgets.CardComponent do
       |> Map.put_new(:header, nil)
       |> Map.put_new(:image, nil)
       |> Map.put_new(:content, nil)
-      |> Map.put_new(:footer, nil)
+      |> Map.put_new(:footers, nil)
       |> Map.put_new(:target, "#bulma-card-#{assigns.id}")
 
     send(self(), {:widgets, :register, {assigns.id, __MODULE__}})
@@ -56,7 +56,13 @@ defmodule BulmaWidgets.CardComponent do
         </div>
 
         <footer class="card-footer">
-          <%= @inner_content.(item: :footer, target: @target) %>
+          <%= unless @footers do %>
+            <%= @inner_content.(item: :footer, target: @target) %>
+          <%= else %>
+            <%= for {name, event_name} <- @footers || [] do %>
+              <a phx-click="<%= event_name %>" class="card-footer-item"><%= name %></a>
+            <%= end %>
+          <%= end %>
         </footer>
 
       </div>
