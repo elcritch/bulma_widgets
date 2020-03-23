@@ -45,10 +45,10 @@ defmodule BulmaWidgets.ModalComponent do
 
           <footer class="modal-card-foot">
             <%= if @footer do %>
-              <button class="button is-success" phx-click="save" phx-target="<%= @target %>">
+              <button class="button <%= @footer[:ok_classes] || 'is-success' %>" phx-click="save" phx-target="<%= @target %>">
                 <%= @footer[:ok] || "Ok" %>
               </button>
-              <button class="button" phx-click="cancel" phx-target="<%= @target %>">
+              <button class="button <%= @footer[:cancel_classes] || '' %>" phx-click="cancel" phx-target="<%= @target %>">
                 <%= @footer[:cancel]  || "Cancel"%>
               </button>
             <%= else %>
