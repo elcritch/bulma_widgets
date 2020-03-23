@@ -5,7 +5,6 @@ defmodule BulmaWidgets.ModalComponent do
   defstruct id: nil, active: false, selected: nil, index: nil, items: []
 
   def update(%{type: :command, active: active?, id: id}, socket) do
-    Logger.warn("modal open: #{inspect id}")
     {:ok, socket |> assign(active: active?)}
   end
 
@@ -30,17 +29,17 @@ defmodule BulmaWidgets.ModalComponent do
         </div>
         <div class="modal-card" phx-click="modal-click" phx-target="<%= @target %>" >
           <header class="modal-card-head">
-            <%= if @title do %>
+            <%= unless @title do %>
+              <%= @inner_content.([item: :header, target: @target]) %>
+            <%= else %>
               <p class="modal-card-title"> <%= @title %> </p>
               <button class="delete" phx-click="delete" phx-target="<%= @target %>" aria-label="close">
               </button>
-            <%= else %>
-              <%= @inner_content.([modal: :card_header, target: @target]) %>
             <%= end %>
           </header>
 
           <section class="modal-card-body">
-            <%= @inner_content.([modal: :card_content, target: @target]) %>
+            <%= @inner_content.([item: :content, target: @target]) %>
           </section>
 
           <footer class="modal-card-foot">
@@ -52,7 +51,7 @@ defmodule BulmaWidgets.ModalComponent do
                 <%= @footer[:cancel]  || "Cancel"%>
               </button>
             <%= else %>
-              <%= @inner_content.([modal: :card_footer, target: @target]) %>
+              <%= @inner_content.([item: :footer, target: @target]) %>
             <%= end %>
           </footer>
         </div>
