@@ -48,12 +48,16 @@ defmodule BulmaWidgets.CardComponent do
         </div>
 
         <div class="card-content">
-          <%= @inner_content.([item: :card_content, target: @target]) %>
+          <%= @inner_content.([item: :content, target: @target]) %>
 
           <div class="content">
-            <%= @inner_content.([item: :content, target: @target]) %>
+            <%= @inner_content.([item: :content_item, target: @target]) %>
           </div>
         </div>
+
+        <footer class="card-footer">
+          <%= @inner_content.([item: :footer, target: @target]) %>
+        </footer>
 
       </div>
     """
