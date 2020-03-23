@@ -12,10 +12,9 @@ defmodule BulmaWidgets.MediaComponent do
 
     assigns =
       assigns
-      |> Map.put_new(:title, nil)
-      |> Map.put_new(:footer, nil)
-      |> Map.put_new(:active, false)
-      |> Map.put_new(:target, "#bulma-modal-#{assigns.id}")
+      |> Map.put_new(:left, nil)
+      |> Map.put_new(:right, nil)
+      |> Map.put_new(:target, "#bulma-media-#{assigns.id}")
 
     send(self(), {:widgets, :register, {assigns.id, __MODULE__}})
     {:ok, socket |> assign(assigns)}
@@ -23,8 +22,7 @@ defmodule BulmaWidgets.MediaComponent do
 
   def render(assigns) do
     ~L"""
-      <div class="media bulma-medias-modals <%= if @active do 'is-active' end %>"
-          id="bulma-medias-<%= @id %>" >
+      <article class="media bulma-medias-modals " id="<%= @target %>" >
         <div class="media-left">
           <%= unless @left do %>
             <%= @inner_content.(item: :left, target: @target) %>
@@ -35,43 +33,19 @@ defmodule BulmaWidgets.MediaComponent do
           <%= end %>
         </div>
         <div class="media-content">
-          <%= @inner_content.(item: :left, target: @target) %>
+          <div class="content">
+            <%= @inner_content.(item: :content, target: @target) %>
+          </div>
         </div>
-      </div>
-      </div>
+        <div class="media-right">
+          <%= unless @right do %>
+            <%= @inner_content.(item: :right, target: @target) %>
+          <%= else %>
+            <button class="delete"></button>
+          <%= end %>
+        </div>
+      </article>
     """
-  end
-
-  def handle_event("modal-click", _params, socket) do
-    Logger.warn("modal click: #{inspect _params}")
-    {:noreply, socket}
-  end
-
-  def handle_event("save", _params, socket) do
-    case socket.assigns[:save] do
-      func when is_function(func) ->
-        func.()
-      nil ->
-        :ok
-    end
-    {:noreply, socket |> assign(active: false)}
-  end
-
-  def handle_event("cancel", _params, socket) do
-    {:noreply, socket |> assign(active: false)}
-  end
-
-  def handle_event("delete", _params, socket) do
-    {:noreply, socket |> assign(active: false)}
-  end
-
-  def handle_event("close", _params, socket) do
-    {:noreply, socket |> assign(active: false)}
-  end
-
-  def handle_event(event, params, socket) do
-    Logger.warn("Unhandled modal event: #{inspect event}")
-    {:noreply, socket}
   end
 
 end

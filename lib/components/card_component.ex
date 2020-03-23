@@ -13,7 +13,7 @@ defmodule BulmaWidgets.CardComponent do
       |> Map.put_new(:image, nil)
       |> Map.put_new(:content, nil)
       |> Map.put_new(:footer, nil)
-      |> Map.put_new(:target, "#bulma-modal-#{assigns.id}")
+      |> Map.put_new(:target, "#bulma-card-#{assigns.id}")
 
     send(self(), {:widgets, :register, {assigns.id, __MODULE__}})
     {:ok, socket |> assign(assigns)}
@@ -21,7 +21,7 @@ defmodule BulmaWidgets.CardComponent do
 
   def render(assigns) do
     ~L"""
-      <div class="card bulma-widgets-cards " id="bulma-card-<%= @id %>" >
+      <div class="card bulma-widgets-cards " id="<%= @target %>" >
         <header class="card-header">
           <%= unless @header do %>
             <%= @inner_content.(item: :header, target: @target) %>
@@ -61,38 +61,6 @@ defmodule BulmaWidgets.CardComponent do
 
       </div>
     """
-  end
-
-  def handle_event("modal-click", _params, socket) do
-    Logger.warn("modal click: #{inspect _params}")
-    {:noreply, socket}
-  end
-
-  def handle_event("save", _params, socket) do
-    case socket.assigns[:save] do
-      func when is_function(func) ->
-        func.()
-      nil ->
-        :ok
-    end
-    {:noreply, socket |> assign(active: false)}
-  end
-
-  def handle_event("cancel", _params, socket) do
-    {:noreply, socket |> assign(active: false)}
-  end
-
-  def handle_event("delete", _params, socket) do
-    {:noreply, socket |> assign(active: false)}
-  end
-
-  def handle_event("close", _params, socket) do
-    {:noreply, socket |> assign(active: false)}
-  end
-
-  def handle_event(event, params, socket) do
-    Logger.warn("Unhandled modal event: #{inspect event}")
-    {:noreply, socket}
   end
 
 end
