@@ -13,7 +13,7 @@ defmodule BulmaWidgets.ModalComponent do
 
     assigns =
       assigns
-      |> Map.put_new(:header?, true)
+      |> Map.put_new(:title, nil)
       |> Map.put_new(:active, false)
       |> Map.put_new(:target, "#bulma-modal-#{assigns.id}")
 
@@ -24,21 +24,17 @@ defmodule BulmaWidgets.ModalComponent do
   def render(assigns) do
     ~L"""
       <div class="modal bulma-widgets-modals <%= if @active do 'is-active' end %>"
-          id="bulma-modal-<%= @id %>"
-          phx-click="modal-click"
-          phx-target="<%= @target %>" >
-        <div class="modal-background">
+          id="bulma-modal-<%= @id %>" >
+        <div class="modal-background" >
         </div>
-        <div class="modal-card">
+        <div class="modal-card" phx-click="modal-click" phx-target="<%= @target %>" >
           <header class="modal-card-head">
-            <%= if @header? do %>
-              <%= @inner_content.([modal: :card_header, target: @target]) %>
-            <%= else %>
-              <p class="modal-card-title">
-                <%= @inner_content.([modal: :card_title, target: @target]) %>
-              </p>
+            <%= if @title do %>
+              <p class="modal-card-title"> <%= @title %> </p>
               <button class="delete" phx-click="delete" phx-target="<%= @target %>" aria-label="close">
               </button>
+            <%= else %>
+              <%= @inner_content.([modal: :card_header, target: @target]) %>
             <%= end %>
           </header>
 
