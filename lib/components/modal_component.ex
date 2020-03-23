@@ -14,6 +14,7 @@ defmodule BulmaWidgets.ModalComponent do
     assigns =
       assigns
       |> Map.put_new(:title, nil)
+      |> Map.put_new(:footer, nil)
       |> Map.put_new(:active, false)
       |> Map.put_new(:target, "#bulma-modal-#{assigns.id}")
 
@@ -43,7 +44,16 @@ defmodule BulmaWidgets.ModalComponent do
           </section>
 
           <footer class="modal-card-foot">
-            <%= @inner_content.([modal: :card_footer, target: @target]) %>
+            <%= if @footer do %>
+              <button class="button is-success" phx-click="save" phx-target="<%= @target %>">
+                <%= @footer[:ok] || "Ok" %>
+              </button>
+              <button class="button" phx-click="cancel" phx-target="<%= @target %>">
+                <%= @footer[:cancel]  || "Cancel"%>
+              </button>
+            <%= else %>
+              <%= @inner_content.([modal: :card_footer, target: @target]) %>
+            <%= end %>
           </footer>
         </div>
       </div>
