@@ -1,18 +1,20 @@
-defmodule BulmaWidgets.CardComponent do
+defmodule BulmaWidgets.MediaComponent do
   use Phoenix.LiveComponent
   require Logger
 
   defstruct id: nil, active: false, selected: nil, index: nil, items: []
 
+  def update(%{type: :command, active: active?, id: id}, socket) do
+    {:ok, socket |> assign(active: active?)}
+  end
 
   def update(assigns, socket) do
 
     assigns =
       assigns
-      |> Map.put_new(:header, nil)
-      |> Map.put_new(:image, nil)
-      |> Map.put_new(:content, nil)
+      |> Map.put_new(:title, nil)
       |> Map.put_new(:footer, nil)
+      |> Map.put_new(:active, false)
       |> Map.put_new(:target, "#bulma-modal-#{assigns.id}")
 
     send(self(), {:widgets, :register, {assigns.id, __MODULE__}})
@@ -21,40 +23,21 @@ defmodule BulmaWidgets.CardComponent do
 
   def render(assigns) do
     ~L"""
-      <div class="card bulma-widgets-cards " id="bulma-card-<%= @id %>" >
-        <header class="card-header">
-          <%= unless @header do %>
-            <%= @inner_content.([item: :header, target: @target]) %>
+      <div class="media bulma-medias-modals <%= if @active do 'is-active' end %>"
+          id="bulma-medias-<%= @id %>" >
+        <div class="media-left">
+          <%= unless @left do %>
+            <%= @inner_content.(item: :left, target: @target) %>
           <%= else %>
-            <p class="card-header-title">
-              <%= @header[:title] %>
-            </p>
-            <a href="<%= @header[:url] %>" class="card-header-icon" aria-label="<%= @header[:aria] %>">
-              <span class="icon">
-                <i class="<%= @header[:icon] %>" aria-hidden="true"></i>
-              </span>
-            </a>
-          <%= end %>
-        </header>
-
-        <div class="card-image">
-          <%= unless @header do %>
-            <%= @inner_content.(item: :image, target: @target) %>
-          <%= else %>
-            <figure class="image <%= @image[:classes] || 'fa fa-angle-down' %>">
-              <img src="<%= @image[:url] %>" alt="<%= @image[:alt_text] %>">
+            <figure class="image <%= @left[:left_classes] %>">
+              <img src="<%= @left[:url] %>" alt="<%= @left[:url_alt] %>">
             </figure>
           <%= end %>
         </div>
-
-        <div class="card-content">
-          <%= @inner_content.([item: :card_content, target: @target]) %>
-
-          <div class="content">
-            <%= @inner_content.([item: :content, target: @target]) %>
-          </div>
+        <div class="media-content">
+          <%= @inner_content.(item: :left, target: @target) %>
         </div>
-
+      </div>
       </div>
     """
   end

@@ -55,7 +55,7 @@ defmodule BulmaWidgets.TabsComponent do
       <div class="tabs-content ">
         <%= for {key, item} <- @items do %>
           <div style="<%= if key != @index do 'display: none;' end %>">
-            <%= @inner_content.([item: item]) %>
+            <%= @inner_content.(item: item) %>
           </div>
         <%= end %>
       </div>

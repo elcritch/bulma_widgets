@@ -30,7 +30,7 @@ defmodule BulmaWidgets.ModalComponent do
         <div class="modal-card" phx-click="modal-click" phx-target="<%= @target %>" >
           <header class="modal-card-head">
             <%= unless @title do %>
-              <%= @inner_content.([item: :header, target: @target]) %>
+              <%= @inner_content.(item: :header, target: @target) %>
             <%= else %>
               <p class="modal-card-title"> <%= @title %> </p>
               <button class="delete" phx-click="delete" phx-target="<%= @target %>" aria-label="close">
@@ -39,7 +39,7 @@ defmodule BulmaWidgets.ModalComponent do
           </header>
 
           <section class="modal-card-body">
-            <%= @inner_content.([item: :content, target: @target]) %>
+            <%= @inner_content.(item: :content, target: @target) %>
           </section>
 
           <footer class="modal-card-foot">
@@ -51,7 +51,7 @@ defmodule BulmaWidgets.ModalComponent do
                 <%= @footer[:cancel]  || "Cancel"%>
               </button>
             <%= else %>
-              <%= @inner_content.([item: :footer, target: @target]) %>
+              <%= @inner_content.(item: :footer, target: @target) %>
             <%= end %>
           </footer>
         </div>
