@@ -39,10 +39,6 @@ defmodule BulmaWidgets do
         {:noreply, socket |> widget_close_all(except: {id, toggle})}
       end
 
-      def handle_info({:widgets, :assign_value, id, value}, socket) do
-        {:noreply, socket |> widget_assign(id, value)}
-      end
-
       defoverridable handle_widget: 4
     end
   end
@@ -61,11 +57,26 @@ defmodule BulmaWidgets do
   end
 
   @doc """
-  Helper function to update a widget value.
+  Helper function to update a widget.
   """
-  @spec widget_register(Phoenix.LiveView.Socket.t(), BulmaWidget.widget_id()) :: Phoenix.LiveView.Socket.t()
-  def widget_assign(socket, widget_id, widget_value) do
-    socket |> assign(widgets: socket.assigns.widgets |> Map.put(widget_id, widget_value))
+  def widget_update(socket, widget_id, value) when is_list(value) do
+    widget_module = socket.assigns.widget_ids[widget_id]
+    send_update(widget_module, [id: widget_id, type: :command] ++ value)
+    socket
+  end
+
+  @doc """
+  Open widget.
+  """
+  def widget_open(socket, widget_id) do
+    socket |> widget_update(widget_id, active: true)
+  end
+
+  @doc """
+  Close widget.
+  """
+  def widget_close(socket, widget_id) do
+    socket |> widget_update(widget_id, active: false)
   end
 
   @doc """
@@ -88,4 +99,5 @@ defmodule BulmaWidgets do
 
     socket
   end
+
 end
