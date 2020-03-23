@@ -31,15 +31,15 @@ defmodule BulmaWidgets.ModalComponent do
         </div>
         <div class="modal-card">
           <header class="modal-card-head">
-            <% if @header? do %>
+            <%= if @header? do %>
               <%= @inner_content.([modal: :card_header, target: @target]) %>
-            <% else %>
+            <%= else %>
               <p class="modal-card-title">
                 <%= @inner_content.([modal: :card_title, target: @target]) %>
               </p>
-              <button class="delete" aria-label="close">
+              <button class="delete" phx-click="delete" phx-target="<%= @target %>" aria-label="close">
               </button>
-            <% end %>
+            <%= end %>
           </header>
 
           <section class="modal-card-body">
@@ -70,6 +70,10 @@ defmodule BulmaWidgets.ModalComponent do
   end
 
   def handle_event("cancel", _params, socket) do
+    {:noreply, socket |> assign(active: false)}
+  end
+
+  def handle_event("delete", _params, socket) do
     {:noreply, socket |> assign(active: false)}
   end
 
