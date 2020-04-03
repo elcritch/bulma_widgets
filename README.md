@@ -2,6 +2,10 @@
 
 Simple LiveComponent wrappers around Bulma "widgets" for Phoenix LiveView. This library is intended to wrap the basic Bulma elements into largely self-contained components making developing interactive UI's in LiveView much simpler. There are a few additional components for use on touch screen and embedded devices for basic's like number inputs. In the future I'd like to have a simialr library for Bootstrap as well. 
 
+## Example Phoenix Project
+
+See [example project](https://github.com/elcritch/bulma_widgets_phx_test) for more examples of usage. Especially [Gallery Live](https://github.com/elcritch/bulma_widgets_phx_test/blob/master/lib/bulma_widgets_phx_test_web/live/gallery_live.ex).
+
 ## Usage
 
 Example usage in a Phoenix LiveView component: 
