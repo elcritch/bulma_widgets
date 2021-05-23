@@ -1,3 +1,5 @@
+Note: Archiving this in favor of https://github.com/elcritch/surface_bulma_widgets 
+
 # BulmaWidgets
 
 Simple LiveComponent wrappers around Bulma "widgets" for Phoenix LiveView. This library is intended to wrap the basic Bulma elements into largely self-contained components making developing interactive UI's in LiveView much simpler. There are a few additional components for use on touch screen and embedded devices for basic's like number inputs. In the future I'd like to have a simialr library for Bootstrap as well. 
